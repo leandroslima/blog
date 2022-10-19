@@ -93,4 +93,14 @@ RSpec.describe "Posts Requests", type: :request do
       end
     end
   end
+
+  describe 'delete post' do
+    let(:post) { create(:post) }
+
+    it 'deleted the post accordingly' do
+      delete post_path(post)
+      expect { Post.find(post.id) }.to raise_error(ActiveRecord::RecordNotFound)
+      expect(response).to have_http_status(:redirect  )
+    end
+  end
 end

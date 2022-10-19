@@ -1,4 +1,6 @@
 class PostsController < ApplicationController
+    before_action :find_post, only: [ :show, :edit, :update, :destroy ]
+
   def new
     @post = Post.new
   end
@@ -14,16 +16,12 @@ class PostsController < ApplicationController
   end
 
   def show
-    @post = Post.find(params[:id])
   end
 
   def edit
-    @post = Post.find(params[:id])
   end
 
   def update
-    @post = Post.find(params[:id])
-
     if @post.update(post_params)
       redirect_to post_path(@post)
     else
@@ -31,9 +29,18 @@ class PostsController < ApplicationController
     end
   end
 
+  def destroy
+    @post.destroy
+    redirect_to root_path
+  end
+
   private
 
   def post_params
     params.require(:post).permit(:title, :body)
+  end
+
+  def find_post
+    @post = Post.find(params[:id])
   end
 end
